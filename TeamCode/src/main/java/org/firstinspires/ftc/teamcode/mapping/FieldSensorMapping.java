@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.mapping;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -11,7 +12,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
-
+@Config
 public class FieldSensorMapping {
 
     SampleMecanumDrive drive;
@@ -20,6 +21,7 @@ public class FieldSensorMapping {
     Telemetry telemetry;
     DetectionPipeline pipeline;
     Boolean isBusy;
+    public static double speed = .25;
     public FieldSensorMapping(SampleMecanumDrive drive, HardwareMap hardwareMap, Telemetry telemetry) {
         this.drive = drive;
         this.hardwareMap = hardwareMap;
@@ -28,7 +30,7 @@ public class FieldSensorMapping {
     }
 
     public void turnToColor() {
-        webcam.setPipeline(new DetectionPipeline(telemetry));
+//        webcam.setPipeline(new DetectionPipeline(telemetry));
         isBusy = true;
 
 
@@ -42,7 +44,7 @@ public class FieldSensorMapping {
                 drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
                 return;
             }
-            drive.setWeightedDrivePower(new Pose2d(0, 0, 1 * mult));
+            drive.setWeightedDrivePower(new Pose2d(0, 0, speed * mult));
         }
     }
 
@@ -54,7 +56,7 @@ public class FieldSensorMapping {
         // Combines the above to create a webcam that we will use
         webcam = OpenCvCameraFactory.getInstance().createWebcam(webcamName, cameraMonitorViewId);
         //Sets our pipeline to view images through as the one we want
-        DetectionPipeline pipeline = new DetectionPipeline(telemetry);
+        this.pipeline = new DetectionPipeline(telemetry);
         webcam.setPipeline(pipeline);
 
         // Turns on the webcam

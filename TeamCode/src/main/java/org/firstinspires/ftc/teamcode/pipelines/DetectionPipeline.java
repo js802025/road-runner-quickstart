@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pipelines;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.opencv.core.Core;
@@ -15,7 +16,7 @@ import org.opencv.core.MatOfPoint;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Config
 public class DetectionPipeline extends OpenCvPipeline
 {
     //  private int width;
@@ -26,7 +27,13 @@ public class DetectionPipeline extends OpenCvPipeline
     public DetectionPipeline(Telemetry telemetry) {
         this.telemetry = telemetry;
     }
+    public static int l1 = 66;
+    public static int l2 = 41;
+    public static int l3 = 108;
 
+    public static int u1 = 216;
+    public static int u2 = 121;
+    public static int u3 = 148;
     @Override
     public Mat processFrame(Mat input) {
         Mat mat = new Mat();
@@ -34,8 +41,8 @@ public class DetectionPipeline extends OpenCvPipeline
         //  Rect crop = new Rect(0, input.height()/2, input.width(), input.height()/2);
         telemetry.addData("Width", input.width());
         //  mat = new Mat(mat, crop);
-        Scalar lower = new Scalar(66, 41, 108);
-        Scalar upper = new Scalar(216, 121, 148);
+        Scalar lower = new Scalar(l1, l2, l3);
+        Scalar upper = new Scalar(u1, u2, u3);
 
         Mat thresh = new Mat();
 
@@ -83,7 +90,7 @@ public class DetectionPipeline extends OpenCvPipeline
         );
 
 
-        return mat;
+        return thresh;
 
     }
 
