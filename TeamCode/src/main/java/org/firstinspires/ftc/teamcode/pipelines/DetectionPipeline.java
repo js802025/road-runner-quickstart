@@ -73,8 +73,8 @@ public class DetectionPipeline extends OpenCvPipeline
         double center = m.m10/m.m00;
         telemetry.addData("Center", center);
         int width = input.width();
-        isFacing = Math.abs(width/2 - center) < 25;
-        distance = (width/2 - center)/Math.abs(width/2 - center);
+        distance = (width/2 - center);
+        isFacing = Math.abs(distance) < 25;
         telemetry.addData("IsFacing", isFacing);
         telemetry.addData("Distance", distance);
         telemetry.update();
@@ -99,7 +99,7 @@ public class DetectionPipeline extends OpenCvPipeline
         return isFacing;
     }
 
-    public double getMultiplier() {
+    public double getDistance() {
         return distance;
     }
 

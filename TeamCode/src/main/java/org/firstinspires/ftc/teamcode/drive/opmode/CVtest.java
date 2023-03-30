@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.Lift;
 import org.firstinspires.ftc.teamcode.mapping.FieldSensorMapping;
 
 
@@ -14,13 +16,18 @@ public class CVtest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        FieldSensorMapping sensorMapping = new FieldSensorMapping(drive, hardwareMap, telemetry);
+        FieldSensorMapping sensorMapping = new FieldSensorMapping(this, drive, hardwareMap, telemetry);
+        Lift lift = new Lift(telemetry, hardwareMap);
 
         waitForStart();
         sensorMapping.turnToColor();
 
         while (!isStopRequested()) {
             sensorMapping.update();
+            if (!sensorMapping.isBusy()){
+                lift.setHeight(200);
+
+            }
             drive.update();
             Pose2d poseEstimate = drive.getPoseEstimate();
             telemetry.addData("x", poseEstimate.getX());

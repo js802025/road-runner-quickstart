@@ -24,7 +24,8 @@ public class Lift {
     DcMotor liftMotor;
     public Lift(Telemetry telemetry, HardwareMap hardwareMap) {
         this.telemetry = telemetry;
-        liftMotor = hardwareMap.dcMotor.get("liftMotor");
+        liftMotor = hardwareMap.dcMotor.get("slide");
+        liftMotor.setTargetPosition(0);
         liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
