@@ -27,12 +27,15 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.mapping;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.View;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -42,6 +45,8 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /**
  * This is an example LinearOpMode that shows how to use a color sensor in a generic
@@ -72,7 +77,6 @@ public class ColorSensorCopy extends LinearOpMode {
 
     /** The colorSensor field will contain a reference to our color sensor hardware object */
     NormalizedColorSensor colorSensor;
-
     /** The relativeLayout field is used to aid in providing interesting visual feedback
      * in this sample application; you probably *don't* need this when you use a color sensor on your
      * robot. Note that you won't see anything change on the Driver Station, only on the Robot Controller. */
@@ -89,6 +93,7 @@ public class ColorSensorCopy extends LinearOpMode {
      * the former from the latter in separate methods.
      */
     @Override public void runOpMode() {
+
 
         // Get a reference to the RelativeLayout so we can later change the background
         // color of the Robot Controller app to match the hue detected by the RGB sensor.
@@ -111,6 +116,7 @@ public class ColorSensorCopy extends LinearOpMode {
     }
 
     protected void runSample() {
+        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         // You can give the sensor a gain value, will be multiplied by the sensor's raw value before the
         // normalized color values are calculated. Color sensors (especially the REV Color Sensor V3)
         // can give very low values (depending on the lighting conditions), which only use a small part
@@ -145,7 +151,8 @@ public class ColorSensorCopy extends LinearOpMode {
 
         // Wait for the start button to be pressed.
         waitForStart();
-
+        drive.setWeightedDrivePower(new Pose2d(0.3, 0, 0));
+        Pose2d linePose;
         // Loop until we are asked to stop
         while (opModeIsActive()) {
             // Explain basic gain information via telemetry
@@ -192,7 +199,19 @@ public class ColorSensorCopy extends LinearOpMode {
 
             // Update the hsvValues array by passing it to Color.colorToHSV()
             Color.colorToHSV(colors.toColor(), hsvValues);
+            //red: 20-40
 
+            if (hsvValues[0]>200 && hsvValues[0]<220) {
+              //  linePose = drive.getPoseEstimate();
+                drive.setDrivePower(new Pose2d(0, 0, 0));
+                Pose2d pos = drive.getPoseEstimate();
+                Vector2d inchback = new Vector2d(-1.5, 0);
+                TrajectorySequence traj = drive.trajectorySequenceBuilder
+                                                (pos).
+                                                lineTo(inchback).
+                                                build();
+                drive.followTrajectorySequenceAsync(traj);
+            }
             telemetry.addLine()
                     .addData("Red", "%.3f", colors.red)
                     .addData("Green", "%.3f", colors.green)
@@ -218,6 +237,7 @@ public class ColorSensorCopy extends LinearOpMode {
                     relativeLayout.setBackgroundColor(Color.HSVToColor(hsvValues));
                 }
             });
+            drive.update();
         }
     }
 }
