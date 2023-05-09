@@ -40,7 +40,7 @@ public class ColorMapping {
     }
 
     public void stopAtLine(COLORS color) {
-        drive.setWeightedDrivePower(new Pose2d(0.3, 0, 0)); //go forward
+        drive.setWeightedDrivePower(new Pose2d(1*forwardMultiplier, 0, 0)); //go forward
 
     }
 
@@ -55,7 +55,7 @@ public class ColorMapping {
             Color.colorToHSV(colors.toColor(), hsvValues);
             if (hsvValues[0] >= activeColor.lowerHue && hsvValues[0] <= activeColor.upperHue) { //checks colors
                 if (!correcting) { //if it is first time seeing color back up slower
-                    drive.setWeightedDrivePower(new Pose2d(-1, 0, 0));
+                    drive.setWeightedDrivePower(new Pose2d(-1*backwardMultiplier, 0, 0));
                     correcting = true;
                 } else {
                     drive.setWeightedDrivePower(new Pose2d(0, 0, 0));
