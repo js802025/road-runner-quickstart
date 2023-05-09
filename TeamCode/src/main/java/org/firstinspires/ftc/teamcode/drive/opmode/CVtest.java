@@ -3,12 +3,11 @@ package org.firstinspires.ftc.teamcode.drive.opmode;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Lift;
-import org.firstinspires.ftc.teamcode.mapping.FieldSensorMapping;
+import org.firstinspires.ftc.teamcode.mapping.CVMapping;
 
 
 @TeleOp(group = "drive")
@@ -16,7 +15,7 @@ public class CVtest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        FieldSensorMapping sensorMapping = new FieldSensorMapping(this, drive, hardwareMap, telemetry);
+        CVMapping sensorMapping = new CVMapping(this, drive, hardwareMap, telemetry);
         Lift lift = new Lift(telemetry, hardwareMap);
 
         waitForStart();

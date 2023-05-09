@@ -5,7 +5,9 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.pipelines.DetectionPipeline;
@@ -13,12 +15,14 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
+
 import com.arcrobotics.ftclib.controller.PIDController;
+
 import org.firstinspires.ftc.teamcode.subsystems.Drivetrain;
 
 
 @Config
-public class FieldSensorMapping {
+public class CVMapping {
 
     SampleMecanumDrive drive;
     HardwareMap hardwareMap;
@@ -35,9 +39,9 @@ public class FieldSensorMapping {
 
     public static PIDController controller = new PIDController(p, i, d);
 
-    public FieldSensorMapping(LinearOpMode opMode, SampleMecanumDrive drive, HardwareMap hardwareMap, Telemetry telemetry) {
+    public CVMapping(LinearOpMode opMode, SampleMecanumDrive drive, HardwareMap hardwareMap, Telemetry telemetry) {
         this.drive = drive;
-        drivetrain =  new Drivetrain(opMode, hardwareMap, telemetry, drive);
+        drivetrain = new Drivetrain(opMode, hardwareMap, telemetry, drive);
         this.hardwareMap = hardwareMap;
         this.telemetry = telemetry;
         controller.setTolerance(tolerance);
@@ -63,7 +67,9 @@ public class FieldSensorMapping {
         }
     }
 
-    public boolean isBusy(){ return isBusy;}
+    public boolean isBusy() {
+        return isBusy;
+    }
 
     private void initCV() {
         // Sets variable for the camera id
@@ -93,5 +99,4 @@ public class FieldSensorMapping {
     }
 
 
-
-    }
+}
